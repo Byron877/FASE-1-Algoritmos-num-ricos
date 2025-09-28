@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calcular Factorial</title>
+</head>
+<body>
+  <h2>Calcular Factorial</h2>
+  <label for="numero">Ingrese un número:</label>
+  <input type="number" id="numero" placeholder="Ejemplo: 5">
+  <button onclick="calcularFactorial()">Calcular</button>
+
+  <p id="resultado"></p>
+
+  <script>
+    function calcularFactorial() {
+      let num = parseInt(document.getElementById("numero").value);
+
+      if (isNaN(num) || num < 0) {
+        document.getElementById("resultado").innerText = 
+          "Por favor, ingrese un número entero positivo.";
+        return;
+      }
+
+      let factorial = 1;
+      let proceso = "";
+
+      for (let i = num; i > 0; i--) {
+        factorial *= i;
+        proceso += i;
+        if (i !== 1) {
+          proceso += ".";
+        }
+      }
+
+      document.getElementById("resultado").innerText = 
+        num + "! = " + proceso + " = " + factorial;
+    }
+  </script>
+</body>
+</html>
+
