@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Tabla de Amortización</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+    th, td { border: 1px solid #444; padding: 8px; text-align: right; }
+    th { background-color: #f2f2f2; }
+    h2 { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Tabla de Amortización (Cuotas sobre Saldos)</h2>
+
+  <label>Monto: </label>
+  <input type="number" id="monto" placeholder="Ej: 10000"><br><br>
+
+  <label>Plazo (meses): </label>
+  <input type="number" id="plazo" placeholder="Ej: 6"><br><br>
+
+  <label>Tasa de interés mensual (%): </label>
+  <input type="number" id="tasa" placeholder="Ej: 1.5" step="0.01"><br><br>
+
+  <button onclick="calcularAmortizacion()">Calcular</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    function calcularAmortizacion() {
+      let monto = parseFloat(document.getElementById("monto").value);
+      let plazo = parseInt(document.getElementById("plazo").value);
+      let tasa = parseFloat(document.getElementById("tasa").value) / 100;
+
+      if (isNaN(monto) || isNaN(plazo) || isNaN(tasa) || monto <= 0 || plazo <= 0 || tasa < 0) {
+        document.getElementById("resultado").innerHTML = 
+          "<p style='color:red;'>Ingrese valores válidos.</p>";
+        return;
+      }
+
+      let abono = monto / plazo; // Abono fijo al capital
+      let saldo = monto;
+
+      let tabla = `
+        <table>
+          <tr>
+            <th>Periodo</th>
+            <th>Saldo</th>
+            <th>Interés</th>
+            <th>Abono</th>
+            <th>Pago</th>
+          </tr>
+      `;
+
+      for (let i = 1; i <= plazo; i++) {
+        let interes = saldo * tasa;
+        let pago = abono + interes;
+
+        tabla += `
+          <tr>
+            <td>${i}</td>
+            <td>Q ${saldo.toFixed(2)}</td>
+            <td>Q ${interes.toFixed(2)}</td>
+            <td>Q ${abono.toFixed(2)}</td>
+            <td>Q ${pago.toFixed(2)}</td>
+          </tr>
+        `;
+
+        saldo -= abono;
+      }
+
+      tabla += "</table>";
+      document.getElementById("resultado").innerHTML = tabla;
+    }
+  </script>
+</body>
+</html>
